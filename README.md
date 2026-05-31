@@ -62,11 +62,13 @@ Get your API key from: https://console.anthropic.com/
 ### 3. Run the Application
 
 Development mode (with auto-restart):
+
 ```bash
 npm run dev
 ```
 
 Production mode:
+
 ```bash
 npm start
 ```
@@ -100,6 +102,7 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 ### 3. Add Environment Variables
 
 In the Render dashboard, add:
+
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 
 ### 4. Deploy
@@ -109,6 +112,7 @@ Click "Create Web Service" and Render will deploy your app automatically.
 ### 5. Database Persistence
 
 Note: The SQLite database file will be stored in Render's ephemeral filesystem. For production, consider:
+
 - Using Render's persistent disk feature
 - Migrating to PostgreSQL for better persistence
 - Backing up data regularly
