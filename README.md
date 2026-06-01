@@ -104,6 +104,13 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 In the Render dashboard, add:
 
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
+- `OPENAI_API_KEY`: Your OpenAI API key, if using the OpenAI interpreter
+- `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
+- `MAX_DREAM_CHARS`: Optional, defaults to `1000`
+- `DREAM_CREATE_RATE_LIMIT_MAX`: Optional, defaults to `3`
+- `DREAM_CREATE_RATE_LIMIT_WINDOW_MS`: Optional, defaults to `900000`
+- `DAILY_DREAM_AI_LIMIT`: Optional, defaults to `15`
+- `OPENAI_MAX_OUTPUT_TOKENS`: Optional, defaults to `350`
 
 ### 4. Deploy
 
