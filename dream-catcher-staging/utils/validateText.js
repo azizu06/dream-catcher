@@ -1,5 +1,7 @@
 // Validation helper
 export function validateText(text) {
+  const maxDreamChars = Number(process.env.MAX_DREAM_CHARS || 1000);
+
   // Type check
   if (typeof text !== 'string') {
     return { valid: false, error: 'Dream text must be a string' };
@@ -14,8 +16,8 @@ export function validateText(text) {
   }
 
   // Length limit check
-  if (trimmed.length > 5000) {
-    return { valid: false, error: 'Dream text must be less than 5000 characters' };
+  if (trimmed.length > maxDreamChars) {
+    return { valid: false, error: `Dream text must be less than ${maxDreamChars} characters` };
   }
 
   return { valid: true, value: trimmed };

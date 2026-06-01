@@ -9,6 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Add securiy headers
 if (process.env.NODE_ENV === 'production') {
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 const PORT = process.env.PORT || 3001;
  
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: process.env.JSON_BODY_LIMIT || '16kb' }));
 app.use(express.static(join(__dirname, 'public')));
 
 // API Routes

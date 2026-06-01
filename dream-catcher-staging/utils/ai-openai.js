@@ -1,20 +1,31 @@
 import OpenAI from 'openai';
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-  });
+
+const getOpenAIConfig = () => {
+  const apiKey = process.env.OPENAI_API_KEY || process.env.OPEN_AI_KEY;
+  const baseURL = process.env.OPENAI_BASE_URL || process.env.OPEN_AI_URL;
+  const model = process.env.OPENAI_MODEL || process.env.OPEN_AI_MODEL || 'gpt-4o-mini';
+  const maxOutputTokens = Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 350);
+
+  return { apiKey, baseURL, model, maxOutputTokens };
+};
 
 // Call OpenAI API for dream interpretation
 export async function getDreamInterpretation(dreamText) {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error('Server misconfigured: OPENAI_API_KEY is missing');
+  const { apiKey, baseURL, model, maxOutputTokens } = getOpenAIConfig();
+
+  if (!apiKey) {
+    throw new Error('Server misconfigured: OPENAI_API_KEY or OPEN_AI_KEY is missing');
   }
 
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+  const openai = new OpenAI({
+    apiKey,
+    ...(baseURL ? { baseURL } : {}),
+  });
 
   try {
     const message = await openai.chat.completions.create({
       model,
-      max_tokens: 512,
+      max_tokens: maxOutputTokens,
       messages: [
         {
           role: 'system',

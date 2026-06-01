@@ -1,9 +1,36 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import pool from '../config/database.js';
 import { getDreamInterpretation } from '../utils/ai-openai.js'; // or '../utils/ai-gemini.js' for Gemini
 import { validateText } from '../utils/validateText.js'
 
 const router = express.Router();
+const maxCreateRequests = Number(process.env.DREAM_CREATE_RATE_LIMIT_MAX || 3);
+const createRateLimitWindowMs = Number(process.env.DREAM_CREATE_RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
+const dailyDreamLimit = Number(process.env.DAILY_DREAM_AI_LIMIT || 10);
+
+let dailyUsage = {
+  day: new Date().toISOString().slice(0, 10),
+  count: 0,
+};
+
+function resetDailyUsageIfNeeded() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (dailyUsage.day !== today) {
+    dailyUsage = { day: today, count: 0 };
+  }
+}
+
+const createDreamLimiter = rateLimit({
+  windowMs: createRateLimitWindowMs,
+  max: maxCreateRequests,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'Too many dream interpretation requests. Please try again later.',
+    type: 'rate_limit',
+  },
+});
 
 // Get all dreams
 router.get('/', async (req, res) => {
@@ -33,11 +60,19 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create new dream with AI interpretation
-router.post('/', async (req, res) => {
+router.post('/', createDreamLimiter, async (req, res) => {
   console.log('POST /api/dreams received');
   console.log('Request body:', req.body);
 
   const { dream_text } = req.body;
+
+  resetDailyUsageIfNeeded();
+  if (dailyUsage.count >= dailyDreamLimit) {
+    return res.status(429).json({
+      error: 'The daily dream interpretation limit has been reached. Please try again tomorrow.',
+      type: 'daily_limit',
+    });
+  }
 
   // Validate input
   const validation = validateText(dream_text);
@@ -58,6 +93,7 @@ router.post('/', async (req, res) => {
     }
     
     console.log('AI interpretation received, inserting into database...');
+    dailyUsage.count += 1;
 
     // Insert into database and return the created dream
     const result = await pool.query(
