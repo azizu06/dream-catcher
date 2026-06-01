@@ -53,15 +53,17 @@ app.get("/shutdown", (req, res) => {
 // API Routes
 app.use("/api/dreams", dreamsRouter);
 
-// Initialize database then start server
+let server;
+
 initDatabase()
   .then(() => {
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
     console.error("Failed to initialize database:", error);
+    process.exit(1);
   });
 
 process.on("SIGTERM", gracefulShutdown);
