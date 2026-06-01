@@ -54,13 +54,13 @@ Edit `.env` and add your OpenAI and Postgres settings:
 
 ```
 OPENAI_API_KEY=your_api_key_here
-OPENAI_BASE_URL=your_openai_compatible_base_url
+OPENAI_URL=your_openai_compatible_base_url
 OPENAI_MODEL=your_model_name
 DATABASE_URL=your_postgres_connection_string
 PORT=3000
 ```
 
-`OPENAI_BASE_URL` is only needed if you are using an OpenAI-compatible provider instead of the default OpenAI API URL.
+`OPENAI_URL` is only needed if you are using an OpenAI-compatible provider instead of the default OpenAI API URL.
 
 ### 3. Run the Application
 
@@ -107,7 +107,7 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 In the Render dashboard, add:
 - `DATABASE_URL`: Your Render Postgres connection string
 - `OPENAI_API_KEY`: Your OpenAI API key
-- `OPENAI_BASE_URL`: Optional, only if using an OpenAI-compatible provider
+- `OPENAI_URL`: Optional, only if using an OpenAI-compatible provider
 - `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
 - `DAILY_DREAM_AI_LIMIT`: Optional, defaults to `10`
 

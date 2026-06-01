@@ -105,6 +105,7 @@ In the Render dashboard, add:
 
 - `ANTHROPIC_API_KEY`: Your Anthropic API key
 - `OPENAI_API_KEY`: Your OpenAI API key, if using the OpenAI interpreter
+- `OPENAI_URL`: Optional, only if using an OpenAI-compatible provider
 - `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
 - `MAX_DREAM_CHARS`: Optional, defaults to `1000`
 - `DREAM_CREATE_RATE_LIMIT_MAX`: Optional, defaults to `3`

@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 
 const getOpenAIConfig = () => {
   const apiKey = process.env.OPENAI_API_KEY;
-  const baseURL = process.env.OPENAI_BASE_URL;
+  const baseURL = process.env.OPENAI_URL;
   const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
   const maxOutputTokens = Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 350);
 
