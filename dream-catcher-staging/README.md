@@ -109,6 +109,7 @@ In the Render dashboard, add:
 - `OPENAI_API_KEY`: Your OpenAI API key
 - `OPENAI_URL`: Optional, only if using an OpenAI-compatible provider
 - `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
+- `OPENAI_REASONING_EFFORT`: Optional, defaults to `minimal`
 - `DAILY_DREAM_AI_LIMIT`: Optional, defaults to `10`
 
 ### 4. Deploy

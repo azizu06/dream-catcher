@@ -107,6 +107,7 @@ In the Render dashboard, add:
 - `OPENAI_API_KEY`: Your OpenAI API key, if using the OpenAI interpreter
 - `OPENAI_URL`: Optional, only if using an OpenAI-compatible provider
 - `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
+- `OPENAI_REASONING_EFFORT`: Optional, defaults to `minimal`
 - `MAX_DREAM_CHARS`: Optional, defaults to `1000`
 - `DREAM_CREATE_RATE_LIMIT_MAX`: Optional, defaults to `3`
 - `DREAM_CREATE_RATE_LIMIT_WINDOW_MS`: Optional, defaults to `900000`

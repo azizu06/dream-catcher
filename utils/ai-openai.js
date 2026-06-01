@@ -12,11 +12,13 @@ export async function getDreamInterpretation(dreamText) {
   });
   const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
   const maxOutputTokens = Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 350);
+  const reasoningEffort = process.env.OPENAI_REASONING_EFFORT || 'minimal';
 
   try {
     const message = await openai.chat.completions.create({
       model,
-      max_tokens: maxOutputTokens,
+      max_completion_tokens: maxOutputTokens,
+      reasoning_effort: reasoningEffort,
       messages: [
         {
           role: 'system',
