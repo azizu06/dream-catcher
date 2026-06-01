@@ -1,9 +1,9 @@
 import OpenAI from 'openai';
 
 const getOpenAIConfig = () => {
-  const apiKey = process.env.OPENAI_API_KEY || process.env.OPEN_AI_KEY;
-  const baseURL = process.env.OPENAI_BASE_URL || process.env.OPEN_AI_URL;
-  const model = process.env.OPENAI_MODEL || process.env.OPEN_AI_MODEL || 'gpt-4o-mini';
+  const apiKey = process.env.OPENAI_API_KEY;
+  const baseURL = process.env.OPENAI_BASE_URL;
+  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
   const maxOutputTokens = Number(process.env.OPENAI_MAX_OUTPUT_TOKENS || 350);
 
   return { apiKey, baseURL, model, maxOutputTokens };
@@ -14,7 +14,7 @@ export async function getDreamInterpretation(dreamText) {
   const { apiKey, baseURL, model, maxOutputTokens } = getOpenAIConfig();
 
   if (!apiKey) {
-    throw new Error('Server misconfigured: OPENAI_API_KEY or OPEN_AI_KEY is missing');
+    throw new Error('Server misconfigured: OPENAI_API_KEY is missing');
   }
 
   const openai = new OpenAI({
