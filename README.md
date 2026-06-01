@@ -1,6 +1,6 @@
 # Dream Journal App
 
-A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using Claude.
+A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using OpenAI.
 
 ## Features
 
@@ -8,16 +8,16 @@ A full-stack web application that allows users to record their dreams and receiv
 - Get AI interpretations of your dreams
 - View all past dreams and their interpretations
 - Delete dreams
-- SQLite database for persistent storage
+- PostgreSQL database for persistent storage
 - Vanilla JavaScript frontend
 - Express backend with RESTful API
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express
-- **Database**: SQLite (better-sqlite3)
+- **Database**: PostgreSQL
 - **Frontend**: HTML, CSS, Vanilla JavaScript
-- **AI**: Anthropic Claude API
+- **AI**: OpenAI API
 
 ## Project Structure
 
@@ -26,8 +26,9 @@ dream-journal/
 ├── server.js           # Express server and API routes
 ├── package.json        # Dependencies and scripts
 ├── .env               # Environment variables (create this)
-├── .env.example       # Example env file
-├── dreams.db          # SQLite database (auto-created)
+├── config/            # PostgreSQL connection and schema setup
+├── routes/            # Express API routes
+├── utils/             # AI and validation helpers
 └── public/
     ├── index.html     # Frontend HTML
     ├── styles.css     # Styles
@@ -50,25 +51,26 @@ Create a `.env` file in the root directory:
 cp .env.example .env
 ```
 
-Edit `.env` and add your Anthropic API key:
+Edit `.env` and add your OpenAI and Postgres settings:
 
 ```
-ANTHROPIC_API_KEY=your_api_key_here
+OPENAI_API_KEY=your_api_key_here
+OPENAI_URL=your_openai_compatible_base_url
+OPENAI_MODEL=your_model_name
+DATABASE_URL=your_postgres_connection_string
 PORT=3000
 ```
 
-Get your API key from: https://console.anthropic.com/
+`OPENAI_URL` is only needed if you are using an OpenAI-compatible provider instead of the default OpenAI API URL.
 
 ### 3. Run the Application
 
 Development mode (with auto-restart):
-
 ```bash
 npm run dev
 ```
 
 Production mode:
-
 ```bash
 npm start
 ```
@@ -96,23 +98,20 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 4. Configure the service:
    - **Name**: dream-journal (or your choice)
    - **Environment**: Node
+   - **Branch**: `staging`
+   - **Root Directory**: leave blank
    - **Build Command**: `npm install`
    - **Start Command**: `npm start`
 
 ### 3. Add Environment Variables
 
 In the Render dashboard, add:
-
-- `ANTHROPIC_API_KEY`: Your Anthropic API key
-- `OPENAI_API_KEY`: Your OpenAI API key, if using the OpenAI interpreter
+- `DATABASE_URL`: Your Render Postgres connection string
+- `OPENAI_API_KEY`: Your OpenAI API key
 - `OPENAI_URL`: Optional, only if using an OpenAI-compatible provider
 - `OPENAI_MODEL`: Optional, defaults to `gpt-4o-mini`
 - `OPENAI_REASONING_EFFORT`: Optional, defaults to `minimal`
-- `MAX_DREAM_CHARS`: Optional, defaults to `1000`
-- `DREAM_CREATE_RATE_LIMIT_MAX`: Optional, defaults to `3`
-- `DREAM_CREATE_RATE_LIMIT_WINDOW_MS`: Optional, defaults to `900000`
-- `DAILY_DREAM_AI_LIMIT`: Optional, defaults to `15`
-- `OPENAI_MAX_OUTPUT_TOKENS`: Optional, defaults to `350`
+- `DAILY_DREAM_AI_LIMIT`: Optional, defaults to `10`
 
 ### 4. Deploy
 
@@ -120,10 +119,7 @@ Click "Create Web Service" and Render will deploy your app automatically.
 
 ### 5. Database Persistence
 
-Note: The SQLite database file will be stored in Render's ephemeral filesystem. For production, consider:
-
-- Using Render's persistent disk feature
-- Migrating to PostgreSQL for better persistence
+Use the Render Postgres internal URL when the web service and database are in the same Render region.
 - Backing up data regularly
 
 ## Usage

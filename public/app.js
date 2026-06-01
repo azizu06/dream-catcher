@@ -6,6 +6,15 @@ const btnText = submitBtn.querySelector('.btn-text');
 const btnLoading = submitBtn.querySelector('.btn-loading');
 const dreamsContainer = document.getElementById('dreamsContainer');
 
+async function readJsonResponse(response) {
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+        return {};
+    }
+
+    return response.json();
+}
+
 // Load dreams on page load
 document.addEventListener('DOMContentLoaded', loadDreams); 
 
@@ -33,11 +42,14 @@ dreamForm.addEventListener('submit', async (e) => {
             body: JSON.stringify({ dream_text: dream }),
         });
 
+        const data = await readJsonResponse(response);
 
         if (!response.ok) {
             showErrorMessage(data.error || 'Failed to process your dream. Please try again.');
             return;
         }
+
+        const newDream = data;
         
         // Clear form
         dreamText.value = '';
